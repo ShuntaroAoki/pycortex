@@ -251,9 +251,11 @@ def make_fiducial(subject, freesurfer_subject_dir=None):
     """Make fiducial surface (halfway between white matter and pial surfaces)
     """
     for hemi in ['lh', 'rh']:
+        fname = get_paths(subject, hemi, "surf", freesurfer_subject_dir=freesurfer_subject_dir).format(name="fiducial")
+        if os.path.isfile(fname):
+            continue
         spts, polys, _ = get_surf(subject, hemi, "smoothwm", freesurfer_subject_dir=freesurfer_subject_dir)
         ppts, _, _ = get_surf(subject, hemi, "pial", freesurfer_subject_dir=freesurfer_subject_dir)
-        fname = get_paths(subject, hemi, "surf", freesurfer_subject_dir=freesurfer_subject_dir).format(name="fiducial")
         write_surf(fname, (spts + ppts) / 2, polys)
 
 
